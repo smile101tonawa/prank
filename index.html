@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>세뇨르의 세계로 초대합니다</title>
     <style>
-        * { margin: 0; padding: 0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background: #000;
             overflow: hidden;
@@ -12,8 +12,10 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            font-family: sans-serif;
+            font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
         }
+
+        /* 시작 버튼 */
         .start-btn {
             padding: 30px 60px;
             font-size: 28px;
@@ -26,86 +28,146 @@
             animation: pulse 1.5s infinite;
             position: fixed;
             transition: none;
+            z-index: 5;
         }
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.1); }
         }
-        .start-btn:hover {
-            background: #ff6666;
-        }
+        .start-btn:hover { background: #ff6666; }
+
+        /* ===== Windows 오류창 (리얼 버전) ===== */
         .error-window {
             position: fixed;
             background: #f0f0f0;
-            border: 1px solid #999;
-            border-radius: 8px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-            animation: popIn 0.3s ease-out;
+            border: 1px solid #707070;
+            border-radius: 6px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1) inset;
+            animation: popIn 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28);
             z-index: 10;
             overflow: hidden;
-            min-width: 200px;
+            min-width: 340px;
+            max-width: 420px;
+            user-select: none;
         }
+
+        /* 타이틀바 */
         .error-titlebar {
-            background: #e81123;
+            background: linear-gradient(180deg, #e81123 0%, #c50f1f 100%);
             color: white;
-            padding: 6px 12px;
+            padding: 7px 10px;
             font-size: 12px;
-            font-weight: bold;
+            font-weight: 600;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            cursor: grab;
+            letter-spacing: 0.3px;
         }
-        .error-titlebar .close-btn {
-            background: none;
+        .error-titlebar:active { cursor: grabbing; }
+        .error-titlebar .title-left {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .error-titlebar .title-icon {
+            width: 14px;
+            height: 14px;
+        }
+        .close-btn {
+            background: transparent;
             border: none;
             color: white;
-            font-size: 16px;
-            cursor: default;
-            font-weight: bold;
-        }
-        .error-body {
-            padding: 12px;
+            font-size: 14px;
+            cursor: pointer;
+            width: 28px;
+            height: 22px;
             display: flex;
-            gap: 12px;
             align-items: center;
+            justify-content: center;
+            border-radius: 3px;
+            transition: background 0.15s;
+            line-height: 1;
+        }
+        .close-btn:hover { background: rgba(255,255,255,0.2); }
+
+        /* 본문 */
+        .error-body {
+            padding: 16px 20px;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
             background: white;
         }
-        .error-icon {
-            font-size: 32px;
+        .error-icon-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
             flex-shrink: 0;
         }
+        .error-icon {
+            font-size: 36px;
+            line-height: 1;
+        }
+
+        /* 사진 (핵심!) */
         .error-photo {
-            width: 80px;
-            height: 80px;
+            width: 110px;
+            height: 110px;
             object-fit: cover;
             border-radius: 4px;
-            border: 1px solid #ccc;
+            border: 2px solid #c50f1f;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            /* 사진이 잘 보이게 강조 */
+        }
+
+        .error-content {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
         .error-text {
-            font-size: 12px;
-            color: #333;
-            font-family: 'Segoe UI', sans-serif;
+            font-size: 13px;
+            color: #1a1a1a;
+            line-height: 1.5;
+            font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
         }
+        .error-code {
+            font-size: 10px;
+            color: #888;
+            font-family: 'Consolas', monospace;
+        }
+
+        /* 푸터 버튼 */
         .error-footer {
             background: #f0f0f0;
-            padding: 8px 12px;
-            text-align: center;
-            border-top: 1px solid #ddd;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            border-top: 1px solid #d9d9d9;
         }
         .error-ok-btn {
-            padding: 4px 24px;
+            padding: 5px 28px;
             font-size: 12px;
-            background: #e0e0e0;
+            background: #e1e1e1;
             border: 1px solid #adadad;
-            border-radius: 4px;
-            cursor: default;
-            font-family: 'Segoe UI', sans-serif;
+            border-radius: 3px;
+            cursor: pointer;
+            font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+            transition: background 0.1s;
         }
+        .error-ok-btn:hover { background: #d0d0d0; }
+        .error-ok-btn:active { background: #c0c0c0; }
+
         @keyframes popIn {
-            0% { transform: scale(0); opacity: 0; }
-            50% { transform: scale(1.1); opacity: 1; }
+            0% { transform: scale(0.3); opacity: 0; }
+            70% { transform: scale(1.05); opacity: 1; }
             100% { transform: scale(1); opacity: 1; }
         }
+
+        /* 메시지 */
         .message {
             position: fixed;
             top: 50%;
@@ -114,11 +176,14 @@
             color: white;
             font-size: 48px;
             font-weight: bold;
-            text-shadow: 0 0 20px red;
+            text-shadow: 0 0 30px red, 0 0 60px red;
             z-index: 999;
             display: none;
             text-align: center;
+            pointer-events: none;
         }
+
+        /* 도발 텍스트 */
         .taunt {
             position: fixed;
             color: #ffcc00;
@@ -126,17 +191,62 @@
             font-weight: bold;
             z-index: 999;
             pointer-events: none;
-            animation: fadeUp 1s ease-out forwards;
+            animation: fadeUp 1.2s ease-out forwards;
+            text-shadow: 0 0 10px rgba(255,200,0,0.5);
         }
         @keyframes fadeUp {
-            0% { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0; transform: translateY(-60px); }
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-80px) scale(1.2); }
         }
+
+        /* 카운터 */
+        .counter {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            color: #ff4444;
+            font-size: 14px;
+            font-family: 'Consolas', monospace;
+            z-index: 1000;
+            display: none;
+            text-shadow: 0 0 10px rgba(255,0,0,0.5);
+        }
+
+        /* 가짜 BSOD */
+        .bsod {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #0078d7;
+            color: white;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            font-family: 'Segoe UI', sans-serif;
+            padding: 40px;
+        }
+        .bsod-emoji { font-size: 120px; margin-bottom: 20px; }
+        .bsod h1 { font-size: 28px; font-weight: 300; margin-bottom: 16px; }
+        .bsod p { font-size: 16px; font-weight: 300; line-height: 1.6; max-width: 600px; text-align: center; }
+        .bsod .progress { margin-top: 30px; font-size: 16px; }
     </style>
 </head>
 <body>
     <button class="start-btn" id="prankBtn">안누르면 곽튜브 부인</button>
-    <div class="message" id="msg"> 선물입니다 </div>
+    <div class="message" id="msg">🎁 선물입니다 🎁</div>
+    <div class="counter" id="counter"></div>
+
+    <!-- 가짜 블루스크린 -->
+    <div class="bsod" id="bsod">
+        <div class="bsod-emoji">:(</div>
+        <h1>PC에 문제가 발생하여 다시 시작해야 합니다.</h1>
+        <p>세뇨르 바이러스(SEÑOR_OVERFLOW)로 인해 시스템이 손상되었습니다.<br>
+        오류 코드: 0xSEÑOR_FATAL</p>
+        <div class="progress" id="bsodProgress">완료율: 0%</div>
+    </div>
 
     <script>
         const photos = [
@@ -173,14 +283,46 @@
             "응답 없음: 세뇨르가 차단하고 있습니다",
             "블루스크린 예정: 원인 - 세뇨르",
             "Windows에서 세뇨르를 발견했습니다",
-            "이 작업을 수행하려면 세뇨르의 허가가 필요합니다"
+            "이 작업을 수행하려면 세뇨르의 허가가 필요합니다",
+            "방화벽이 세뇨르에 의해 무력화되었습니다",
+            "RAM 사용량 99%: 세뇨르.exe 실행 중",
+            "세뇨르가 작업 관리자를 비활성화했습니다",
+            "Ctrl+Alt+Del이 세뇨르에 의해 차단됨"
+        ];
+
+        const errorCodes = [
+            "0xSEÑOR_001", "0xDEAD_SEÑOR", "0xFF_SEÑOR_FF",
+            "SEÑOR_OVERFLOW", "KERNEL_SEÑOR_PANIC", "SEÑOR_NOT_FOUND",
+            "ACCESS_SEÑOR_DENIED", "SEÑOR_STACK_OVERFLOW"
         ];
 
         let dodgeCount = 0;
-        let count = 0;
+        let totalWindows = 0;
+        let pranking = false;
         const btn = document.getElementById('prankBtn');
-        const taunts = ["너 곽튜브 부인이야?", "아 낳은게 너인가베", "ㄱ낄끼리낄"];
+        const counterEl = document.getElementById('counter');
+        const taunts = [
+            "너 곽튜브 부인이야?",
+            "아 낳은게 너인가베",
+            "ㄱ낄끼리낄"
+        ];
 
+        // Windows 오류 사운드 (Web Audio API)
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playErrorSound() {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.15);
+            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+            osc.start(audioCtx.currentTime);
+            osc.stop(audioCtx.currentTime + 0.15);
+        }
+
+        // 버튼 도망
         btn.addEventListener('mouseenter', function() {
             if (dodgeCount < 3) {
                 const maxX = window.innerWidth - btn.offsetWidth - 20;
@@ -196,7 +338,7 @@
                 taunt.style.left = newX + 'px';
                 taunt.style.top = (newY - 30) + 'px';
                 document.body.appendChild(taunt);
-                setTimeout(() => taunt.remove(), 1000);
+                setTimeout(() => taunt.remove(), 1200);
 
                 dodgeCount++;
             }
@@ -211,41 +353,125 @@
         function startPrank() {
             btn.style.display = 'none';
             document.getElementById('msg').style.display = 'block';
+            counterEl.style.display = 'block';
+            pranking = true;
 
+            // 1단계: 오류창 폭격
+            let count = 0;
             const interval = setInterval(() => {
-                if (count >= 60) {
+                if (count >= 80) {
                     clearInterval(interval);
+                    // 2단계: 블루스크린
+                    setTimeout(showBSOD, 2000);
                     return;
                 }
                 spawnErrorWindow();
                 count++;
-            }, 150);
+            }, 120);
         }
 
         function spawnErrorWindow() {
             const photo = photos[Math.floor(Math.random() * photos.length)];
             const message = errorMessages[Math.floor(Math.random() * errorMessages.length)];
+            const code = errorCodes[Math.floor(Math.random() * errorCodes.length)];
 
             const win = document.createElement('div');
             win.className = 'error-window';
-            win.style.left = Math.random() * (window.innerWidth - 280) + 'px';
-            win.style.top = Math.random() * (window.innerHeight - 180) + 'px';
+
+            const x = Math.random() * (window.innerWidth - 380);
+            const y = Math.random() * (window.innerHeight - 220);
+            win.style.left = x + 'px';
+            win.style.top = y + 'px';
 
             win.innerHTML = `
                 <div class="error-titlebar">
-                    <span>⚠ Windows 오류</span>
-                    <span class="close-btn">✕</span>
+                    <div class="title-left">
+                        <span>⚠️</span>
+                        <span>Windows 오류</span>
+                    </div>
+                    <button class="close-btn" onclick="multiplyWindow(this)">✕</button>
                 </div>
                 <div class="error-body">
-                    <img class="error-photo" src="${photo}">
-                    <div class="error-text">${message}</div>
+                    <div class="error-icon-col">
+                        <img class="error-photo" src="${photo}" alt="세뇨르">
+                    </div>
+                    <div class="error-content">
+                        <div class="error-text">${message}</div>
+                        <div class="error-code">${code}</div>
+                    </div>
                 </div>
                 <div class="error-footer">
-                    <button class="error-ok-btn">확인</button>
+                    <button class="error-ok-btn" onclick="multiplyWindow(this)">확인</button>
+                    <button class="error-ok-btn" onclick="multiplyWindow(this)">취소</button>
                 </div>
             `;
 
             document.body.appendChild(win);
+            playErrorSound();
+
+            totalWindows++;
+            counterEl.textContent = `세뇨르 감염 수: ${totalWindows}`;
+
+            // 드래그 기능
+            makeDraggable(win);
+        }
+
+        // 닫기/확인 누르면 2개 더 생김
+        function multiplyWindow(el) {
+            playErrorSound();
+            spawnErrorWindow();
+            spawnErrorWindow();
+        }
+
+        // 드래그
+        function makeDraggable(el) {
+            const titlebar = el.querySelector('.error-titlebar');
+            let offsetX, offsetY, dragging = false;
+
+            titlebar.addEventListener('mousedown', (e) => {
+                if (e.target.classList.contains('close-btn')) return;
+                dragging = true;
+                offsetX = e.clientX - el.offsetLeft;
+                offsetY = e.clientY - el.offsetTop;
+                el.style.zIndex = 1000;
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!dragging) return;
+                el.style.left = (e.clientX - offsetX) + 'px';
+                el.style.top = (e.clientY - offsetY) + 'px';
+            });
+
+            document.addEventListener('mouseup', () => {
+                dragging = false;
+            });
+        }
+
+        // 가짜 블루스크린
+        function showBSOD() {
+            const bsod = document.getElementById('bsod');
+            bsod.style.display = 'flex';
+
+            let percent = 0;
+            const progressEl = document.getElementById('bsodProgress');
+            const bsodInterval = setInterval(() => {
+                percent += Math.floor(Math.random() * 3) + 1;
+                if (percent > 100) percent = 100;
+                progressEl.textContent = `완료율: ${percent}%`;
+                if (percent >= 100) {
+                    clearInterval(bsodInterval);
+                    setTimeout(() => {
+                        bsod.style.display = 'none';
+                        // 다시 오류창 폭격 재개
+                        let count2 = 0;
+                        const interval2 = setInterval(() => {
+                            if (count2 >= 30) { clearInterval(interval2); return; }
+                            spawnErrorWindow();
+                            count2++;
+                        }, 80);
+                    }, 3000);
+                }
+            }, 200);
         }
     </script>
 </body>
