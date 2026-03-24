@@ -24,6 +24,8 @@
             cursor: pointer;
             font-weight: bold;
             animation: pulse 1.5s infinite;
+            position: fixed;
+            transition: none;
         }
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
@@ -58,35 +60,113 @@
             display: none;
             text-align: center;
         }
+        .taunt {
+            position: fixed;
+            color: #ffcc00;
+            font-size: 24px;
+            font-weight: bold;
+            z-index: 999;
+            pointer-events: none;
+            animation: fadeUp 1s ease-out forwards;
+        }
+        @keyframes fadeUp {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-60px); }
+        }
     </style>
 </head>
 <body>
-    <button class="start-btn" onclick="startPrank()">안누르면 곽튜브 부인</button>
+    <button class="start-btn" id="prankBtn">안누르면 곽튜브 부인</button>
     <div class="message" id="msg"> 선물입니다 </div>
 
     <script>
-        // ⬇⬇⬇ 여기에 친구 사진 URL을 넣으세요 ⬇⬇⬇
         const photos = [
-            "https://imgur.com/APpEeFR",
-            "https://imgur.com/QIhwv02",
-            "https://imgur.com/qDCBjuQ",
-            "https://imgur.com/rzlXy8c",
-            "https://imgur.com/9YACDNE",
-            "https://imgur.com/9VhpvJH",
-            "https://imgur.com/COZE7ly",
-            "https://imgur.com/dV3hI7d",
-            "https://imgur.com/Xb97rZ0",
-            "https://imgur.com/zfjE7S5",
-            "https://imgur.com/CGY5KwD",
-            "https://imgur.com/p4el6s8",
-            "https://imgur.com/HIdfWiq",
-            "https://imgur.com/RldweUx",
-            "https://imgur.com/IVR6Mab",
-            "https://imgur.com/R0LlQI8",
-            "https://imgur.com/C2Fxj10",
-            "https://imgur.com/fhFusNg",
-            "https://imgur.com/SPbeGNr",
-            "https://imgur.com/0t7QdtL",
-            "https://imgur.com/Y2JEKXl"
+            "https://i.imgur.com/APpEeFR.jpg",
+            "https://i.imgur.com/QIhwv02.jpg",
+            "https://i.imgur.com/qDCBjuQ.jpg",
+            "https://i.imgur.com/rzlXy8c.jpg",
+            "https://i.imgur.com/9YACDNE.jpg",
+            "https://i.imgur.com/9VhpvJH.jpg",
+            "https://i.imgur.com/COZE7ly.jpg",
+            "https://i.imgur.com/dV3hI7d.jpg",
+            "https://i.imgur.com/Xb97rZ0.jpg",
+            "https://i.imgur.com/zfjE7S5.jpg",
+            "https://i.imgur.com/CGY5KwD.jpg",
+            "https://i.imgur.com/p4el6s8.jpg",
+            "https://i.imgur.com/HIdfWiq.jpg",
+            "https://i.imgur.com/RldweUx.jpg",
+            "https://i.imgur.com/IVR6Mab.jpg",
+            "https://i.imgur.com/R0LlQI8.jpg",
+            "https://i.imgur.com/C2Fxj10.jpg",
+            "https://i.imgur.com/fhFusNg.jpg",
+            "https://i.imgur.com/SPbeGNr.jpg",
+            "https://i.imgur.com/0t7QdtL.jpg",
+            "https://i.imgur.com/Y2JEKXl.jpg"
         ];
-        // ⬆⬆⬆<span class="cursor">█</span>
+
+        let dodgeCount = 0;
+        let count = 0;
+        const btn = document.getElementById('prankBtn');
+        const taunts = ["너 곽튜브 부인이야?", "아 낳은게 너인가베", "ㄱ낄끼리낄"];
+
+        btn.addEventListener('mouseenter', function() {
+            if (dodgeCount < 3) {
+                // 버튼 도망가기
+                const maxX = window.innerWidth - btn.offsetWidth - 20;
+                const maxY = window.innerHeight - btn.offsetHeight - 20;
+                const newX = Math.random() * maxX;
+                const newY = Math.random() * maxY;
+                btn.style.left = newX + 'px';
+                btn.style.top = newY + 'px';
+
+                // 도발 메시지 표시
+                const taunt = document.createElement('div');
+                taunt.className = 'taunt';
+                taunt.textContent = taunts[dodgeCount];
+                taunt.style.left = newX + 'px';
+                taunt.style.top = (newY - 30) + 'px';
+                document.body.appendChild(taunt);
+                setTimeout(() => taunt.remove(), 1000);
+
+                dodgeCount++;
+            }
+        });
+
+        btn.addEventListener('click', function() {
+            if (dodgeCount >= 3) {
+                startPrank();
+            }
+        });
+
+        function startPrank() {
+            btn.style.display = 'none';
+            document.getElementById('msg').style.display = 'block';
+
+            const interval = setInterval(() => {
+                if (count >= 80) {
+                    clearInterval(interval);
+                    return;
+                }
+                spawnPhoto();
+                count++;
+            }, 100);
+        }
+
+        function spawnPhoto() {
+            const img = document.createElement('img');
+            img.src = photos[Math.floor(Math.random() * photos.length)];
+            img.className = 'photo';
+
+            const size = 80 + Math.random() * 150;
+            img.style.width = size + 'px';
+            img.style.height = size + 'px';
+            img.style.objectFit = 'cover';
+            img.style.left = Math.random() * (window.innerWidth - size) + 'px';
+            img.style.top = Math.random() * (window.innerHeight - size) + 'px';
+            img.style.setProperty('--rotate', (Math.random() * 40 - 20) + 'deg');
+
+            document.body.appendChild(img);
+        }
+    </script>
+</body>
+</html>
