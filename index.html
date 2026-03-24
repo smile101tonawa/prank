@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>세뇨르의 세계로 초대합니다</title>
+    <style>
+        * { margin: 0; padding: 0; }
+        body {
+            background: #000;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: sans-serif;
+        }
+        .start-btn {
+            padding: 30px 60px;
+            font-size: 28px;
+            background: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        .start-btn:hover {
+            background: #ff6666;
+        }
+        .photo {
+            position: fixed;
+            border: 4px solid white;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(255,255,255,0.5);
+            animation: popIn 0.3s ease-out;
+            z-index: 10;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0) rotate(0deg); opacity: 0; }
+            50% { transform: scale(1.3) rotate(10deg); opacity: 1; }
+            100% { transform: scale(1) rotate(var(--rotate)); opacity: 1; }
+        }
+        .message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 48px;
+            font-weight: bold;
+            text-shadow: 0 0 20px red;
+            z-index: 999;
+            display: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <button class="start-btn" onclick="startPrank()">안누르면 곽튜브 부인</button>
+    <div class="message" id="msg"> 선물입니다 </div>
+
+    <script>
+        // ⬇⬇⬇ 여기에 친구 사진 URL을 넣으세요 ⬇⬇⬇
+        const photos = [
+            "https://imgur.com/APpEeFR",
+            "https://imgur.com/QIhwv02",
+            "https://imgur.com/qDCBjuQ",
+            "https://imgur.com/rzlXy8c",
+            "https://imgur.com/9YACDNE",
+            "https://imgur.com/9VhpvJH",
+            "https://imgur.com/COZE7ly",
+            "https://imgur.com/dV3hI7d",
+            "https://imgur.com/Xb97rZ0",
+            "https://imgur.com/zfjE7S5",
+            "https://imgur.com/CGY5KwD",
+            "https://imgur.com/p4el6s8",
+            "https://imgur.com/HIdfWiq",
+            "https://imgur.com/RldweUx",
+            "https://imgur.com/IVR6Mab",
+            "https://imgur.com/R0LlQI8",
+            "https://imgur.com/C2Fxj10",
+            "https://imgur.com/fhFusNg",
+            "https://imgur.com/SPbeGNr",
+            "https://imgur.com/0t7QdtL",
+            "https://imgur.com/Y2JEKXl"
+        ];
+        // ⬆⬆⬆<span class="cursor">█</span>
